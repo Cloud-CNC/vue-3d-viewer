@@ -8,6 +8,15 @@ import state from './state';
 
 export const file = async (file, extension, theme) =>
 {
+  //Remove existing meshes
+  if (state.meshes != null)
+  {
+    for (const mesh of state.meshes)
+    {
+      state.scene.remove(mesh);
+    }
+  }
+
   //Parse and load
   const meshes = await parser(file, extension, theme);
 
@@ -20,7 +29,6 @@ export const file = async (file, extension, theme) =>
     for (const mesh of state.meshes)
     {
       state.scene.add(mesh);
-      console.log('Adding', mesh);
     }
   }
 };

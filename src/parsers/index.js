@@ -35,8 +35,8 @@ export default async (file, extension, theme) =>
     //Load and parse the file; convert to ThreeJS mesh
     const parser = new gcodeParser(theme);
     const string = new TextDecoder().decode(file);
-    const mesh = await parser.parse(string);
+    const meshes = await parser.parse(string);
 
-    return [mesh];
+    return meshes;
   }
 };
