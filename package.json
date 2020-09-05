@@ -1,0 +1,61 @@
+{
+  "name": "vue-3d-viewer",
+  "version": "0.1.0",
+  "author": "Cloud CNC",
+  "scripts": {
+    "build": "vue-cli-service build --target lib --name vue-3d-viewr src/main.js",
+    "coverage": "npm run test:unit && npm run test:e2e:cli && nyc report --reporter-lcov",
+    "lint": "vue-cli-service lint",
+    "serve": "vue-cli-service serve src/demo/main.js",
+    "test:e2e": "vue-cli-service test:e2e --url http://localhost:8080",
+    "test:e2e:cli": "concurrently --kill-others --success first \"npm:serve\" \"wait-on http-get://localhost:8080 && npm run test:e2e -- --headless\"",
+    "test:e2e:gui": "concurrently --kill-others --success first \"npm:serve\" \"wait-on http-get://localhost:8080 && npm run test:e2e\"",
+    "test:unit": "vue-cli-service test:unit"
+  },
+  "main": "dist/vue-3d-viewer.common.js",
+  "files": [
+    "dist/*",
+    "src/*"
+  ],
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "vue": "^2.6.11"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-e2e-cypress": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-unit-mocha": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/test-utils": "^1.0.3",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-istanbul": "^6.0.0",
+    "chai": "^4.1.2",
+    "concurrently": "^5.3.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "nyc": "^15.1.0",
+    "vue-template-compiler": "^2.6.11",
+    "wait-on": "^5.2.0"
+  },
+  "bugs": {
+    "url": "https://github.com/Cloud-CNC/vue-3d-viewer/issues"
+  },
+  "homepage": "https://github.com/Cloud-CNC/vue-3d-viewer#readme",
+  "keywords": [
+    "vue",
+    "3d",
+    "3mf",
+    "amf",
+    "obj",
+    "ply",
+    "stl",
+    "gcode",
+    "cloud-cnc"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cloud-CNC/vue-3d-viewer.git"
+  }
+}
