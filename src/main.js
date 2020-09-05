@@ -16,7 +16,7 @@ export default {
     //Register component
     vue.mixin({
       components: {
-        '3d-viewer': viewer
+        'three-d-viewer': viewer
       }
     });
   }
