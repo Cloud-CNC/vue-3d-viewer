@@ -1,34 +1,36 @@
-# vue-3d-viewer
+# Vue 3D Viewer
+![status](https://img.shields.io/badge/status-release-brightgreen)
+[![npm](https://img.shields.io/npm/v/vue-3d-viewer)](https://npmjs.com/package/vue-3d-viewer)
+[![tests](https://img.shields.io/github/workflow/status/Cloud-CNC/vue-3d-viewer/Tests?label=tests)](https://github.com/Cloud-CNC/vue-3d-viewer/actions)
+[![issues](https://img.shields.io/github/issues/Cloud-CNC/vue-3d-viewer)](https://github.com/Cloud-CNC/vue-3d-viewer/issues)
+[![last commit](https://img.shields.io/github/last-commit/Cloud-CNC/vue-3d-viewer)](https://github.com/Cloud-CNC/vue-3d-viewer/commits/master)
 
-## Project setup
-```
-yarn install
-```
+A Vue 3D file viewer via Three.JS and [Unified 3D Loader](https://github.com/Cloud-CNC/unified-3d-loader)
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+## Features
+* Offloads parsing to a worker thread
+* Fully reactive to props
+* Moderately customizable with good defaults
+* Relatively fast (Parsing and displaying)
 
-### Compiles and minifies for production
-```
-yarn build
-```
+## Documentation
+### File Formats
+Check out [Unified 3D Loader](https://github.com/Cloud-CNC/unified-3d-loader#file-formats) for a list of supported file types. This package also has a GCODE parser for GCODE file support.
 
-### Run your unit tests
-```
-yarn test:unit
-```
+### Props
+Name | Type | Description | Default
+--- | --- | --- | ---
+`file` | `ArrayBuffer` | The raw file | N/A
+`extension` | `String` | The file extension (Used to identify the correct parser) | N/A
+`plane` | `Object` | The plane/bed width and height | `{X: 10, Y:10}`
+`position` | `Object` | The position of the object | `{X: 5, Y: 0, Z: -5}`
+`rotation` | `Object` | The rotation of the object (Degrees) | `{X: -90, Y: 0, Z: 180}`
+`scale` | `Object` | The scale of the object (Some file formats all specify units which will effect scale) | `{X: 0.1, Y: 0.1, Z: 0.1}`
+`theme` | `Object` | The theme (colors) of the viewer. | `{background: "#dfe4ed", plane: "#586375", primary: "#4287f5", secondary: "#0a2f6b"}`
+*All props should be fully reactive, so feel free to update them dynamically.*
 
-### Run your end-to-end tests
-```
-yarn test:e2e
-```
+### Examples
+* [Demo](./src/demo)
 
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Reuse
+If you're interested in reusing primarily the non-Vue code from this package, you may be interested in the [parsers directory](./src/parsers) and [Unified 3D Loader](https://github.com/Cloud-CNC/unified-3d-loader)
