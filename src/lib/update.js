@@ -82,7 +82,7 @@ export const theme = theme =>
   state.scene.background.set(theme.background);
 
   //Update plane
-  state.plane.material.color.set(plane);
+  state.plane.material.color.set(theme.plane);
 
   //Update meshes
   if (state.meshes != null)

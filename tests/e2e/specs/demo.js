@@ -2,17 +2,24 @@
  * @fileoverview Demo E2E tests
  */
 
-//Benchy ArrayBuffer
-let benchy;
+//Benchy ArrayBuffers
+let benchyGCODE;
+let benchySTL;
 
 describe('demo', () => 
 {
   before(() =>
   {
+    cy.task('readBinary', './assets/benchy.gcode').then(async gcode =>
+    {
+      //Convert to ArrayBuffer
+      benchyGCODE = new Uint8Array(JSON.parse(gcode)).buffer;
+    });
+
     cy.task('readBinary', './assets/benchy.stl').then(async stl =>
     {
       //Convert to ArrayBuffer
-      benchy = new Uint8Array(JSON.parse(stl)).buffer;
+      benchySTL = new Uint8Array(JSON.parse(stl)).buffer;
     });
   });
 
@@ -70,7 +77,7 @@ describe('demo', () =>
     cy.visit('/');
 
     //Upload
-    cy.upload('Benchy.stl', benchy, 'model/stl', '[data-e2e=file-input]');
+    cy.upload('Benchy.gcode', benchyGCODE, 'text/plain', '[data-e2e=file-input]');
 
     cy.get('[data-e2e=toggle-menu]').click();
 
@@ -97,7 +104,7 @@ describe('demo', () =>
     cy.visit('/');
 
     //Upload
-    cy.upload('Benchy.stl', benchy, 'model/stl', '[data-e2e=file-input]');
+    cy.upload('Benchy.gcode', benchyGCODE, 'text/plain', '[data-e2e=file-input]');
 
     cy.get('[data-e2e=toggle-menu]').click();
 
@@ -124,7 +131,7 @@ describe('demo', () =>
     cy.visit('/');
 
     //Upload
-    cy.upload('Benchy.stl', benchy, 'model/stl', '[data-e2e=file-input]');
+    cy.upload('Benchy.gcode', benchyGCODE, 'text/plain', '[data-e2e=file-input]');
 
     cy.get('[data-e2e=toggle-menu]').click();
 
@@ -136,8 +143,6 @@ describe('demo', () =>
     {
       const state = window.getVue3dViewerState();
 
-      console.log(state);
-
       expect(state.meshes[0].scale.x).to.equal(x);
       expect(state.meshes[0].scale.y).to.equal(y);
       expect(state.meshes[0].scale.z).to.equal(z);
@@ -146,36 +151,67 @@ describe('demo', () =>
 
   it('updates the theme', () =>
   {
-    const primaryColor = '#00000f';
-    const secondaryColor = '#0000f0';
-    const planeColor = '#0000ff';
-    const backgroundColor = '#000f00';
+    const backgroundColor = '#fcba03';
+    const planeColor = '#32a852';
+    const primaryColor = '#eb4034';
+    const secondaryColor = '#4287f5';
 
     cy.visit('/');
 
     //Upload
-    cy.upload('Benchy.stl', benchy, 'model/stl', '[data-e2e=file-input]');
+    cy.upload('Benchy.gcode', benchyGCODE, 'text/plain', '[data-e2e=file-input]');
 
     cy.get('[data-e2e=toggle-menu]').click();
 
     //Set color pickers to hex code
+    cy.get('[data-e2e=background-color]').children().eq(1).children().eq(1).children().eq(3).click().click();
+    cy.get('[data-e2e=plane-color]').children().eq(1).children().eq(1).children().eq(3).click().click();
     cy.get('[data-e2e=primary-color]').children().eq(1).children().eq(1).children().eq(3).click().click();
     cy.get('[data-e2e=secondary-color]').children().eq(1).children().eq(1).children().eq(3).click().click();
-    cy.get('[data-e2e=plane-color]').children().eq(1).children().eq(1).children().eq(3).click().click();
-    cy.get('[data-e2e=background-color]').children().eq(1).children().eq(1).children().eq(3).click().click();
 
+    cy.get('[data-e2e=background-color]').children().eq(1).children().eq(1).children().eq(0).children().eq(0).clear().type(`${backgroundColor}{enter}`);
+    cy.get('[data-e2e=plane-color]').children().eq(1).children().eq(1).children().eq(0).children().eq(0).clear().type(`${planeColor}{enter}`);
     cy.get('[data-e2e=primary-color]').children().eq(1).children().eq(1).children().eq(0).children().eq(0).clear().type(`${primaryColor}{enter}`);
     cy.get('[data-e2e=secondary-color]').children().eq(1).children().eq(1).children().eq(0).children().eq(0).clear().type(`${secondaryColor}{enter}`);
-    cy.get('[data-e2e=plane-color]').children().eq(1).children().eq(1).children().eq(0).children().eq(0).clear().type(`${planeColor}{enter}`);
-    cy.get('[data-e2e=background-color]').children().eq(1).children().eq(1).children().eq(0).children().eq(0).clear().type(`${backgroundColor}{enter}`);
 
     cy.window().then(window =>
     {
       const state = window.getVue3dViewerState();
 
-      expect(`#${state.meshes[0].material.color.getHexString()}`).to.equal(primaryColor);
-      expect(`#${state.plane.material.color.getHexString()}`).to.equal(planeColor);
       expect(`#${state.scene.background.getHexString()}`).to.equal(backgroundColor);
+      expect(`#${state.plane.material.color.getHexString()}`).to.equal(planeColor);
+      expect(`#${state.meshes[0].material.color.getHexString()}`).to.equal(primaryColor);
+      expect(`#${state.meshes[1].material.color.getHexString()}`).to.equal(secondaryColor);
+    });
+  });
+
+  it('updates the meshes', () =>
+  {
+    cy.visit('/');
+
+    //Upload
+    cy.upload('Benchy.stl', benchySTL, 'model/stl', '[data-e2e=file-input]');
+
+    cy.wait(1000);
+
+    cy.window().then(window =>
+    {
+      const state = window.getVue3dViewerState();
+
+      expect(state.meshes).to.not.be.null;
+      expect(state.meshes).to.have.length(1);
+    });
+
+    cy.upload('Benchy.gcode', benchyGCODE, 'text/plain', '[data-e2e=file-input]');
+
+    cy.wait(1000);
+
+    cy.window().then(window =>
+    {
+      const state = window.getVue3dViewerState();
+
+      expect(state.meshes).to.not.be.null;
+      expect(state.meshes).to.have.length(2);
     });
   });
 });
