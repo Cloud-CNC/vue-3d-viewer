@@ -192,7 +192,7 @@ describe('demo', () =>
     //Upload
     cy.upload('Benchy.stl', benchySTL, 'model/stl', '[data-e2e=file-input]');
 
-    cy.wait(1000);
+    cy.wait(5000);
 
     cy.window().then(window =>
     {
@@ -204,7 +204,7 @@ describe('demo', () =>
 
     cy.upload('Benchy.gcode', benchyGCODE, 'text/plain', '[data-e2e=file-input]');
 
-    cy.wait(2000);
+    cy.wait(5000);
 
     cy.window().then(window =>
     {
