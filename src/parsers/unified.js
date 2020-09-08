@@ -53,6 +53,9 @@ export default async (file, format, theme) =>
     //Create the mesh
     const mesh = new Mesh(geometry, material);
 
+    //Metadata
+    mesh.metadata = {...mesh.metadata, color: 'primary'};
+
     meshes.push(mesh);
   }
 

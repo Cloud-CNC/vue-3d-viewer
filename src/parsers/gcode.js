@@ -50,6 +50,10 @@ export default async (file, theme) =>
   const primaryLine = new Line(primaryGeometry, primaryMaterial);
   const secondaryLine = new Line(secondaryGeometry, secondaryMaterial);
 
+  //Metadata
+  primaryLine.metadata = {...primaryLine.metadata, color: 'primary'};
+  secondaryLine.metadata = {...secondaryLine.metadata, color: 'secondary'};
+
   //Cleanup
   primaryGeometry.dispose();
   secondaryGeometry.dispose();

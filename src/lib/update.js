@@ -67,7 +67,7 @@ export const rotation = ({X, Y, Z}) =>
 };
 
 export const scale = ({X, Y, Z}) =>
-{  
+{
   if (state.meshes != null)
   {
     for (const mesh of state.meshes)
@@ -76,10 +76,10 @@ export const scale = ({X, Y, Z}) =>
     }
   }
 };
-export const theme = ({background, plane, primary}) =>
+export const theme = theme =>
 {
   //Update background
-  state.scene.background.set(background);
+  state.scene.background.set(theme.background);
 
   //Update plane
   state.plane.material.color.set(plane);
@@ -89,7 +89,16 @@ export const theme = ({background, plane, primary}) =>
   {
     for (const mesh of state.meshes)
     {
-      mesh.material.color.set(primary);
+      //If the mesh lacks the color metadata property or the color doesn't exist, use the primary color
+      if (mesh.metadata.color == null || !Object.keys(theme).includes(mesh.metadata.color))
+      {
+        mesh.material.color.set(theme.primary);
+      }
+      //Otherwise set the mesh color to the primary color
+      else
+      {
+        mesh.material.color.set(theme[mesh.metadata.color]);
+      }
     }
   }
 };
