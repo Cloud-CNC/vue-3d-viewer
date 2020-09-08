@@ -204,7 +204,7 @@ describe('demo', () =>
 
     cy.upload('Benchy.gcode', benchyGCODE, 'text/plain', '[data-e2e=file-input]');
 
-    cy.wait(1000);
+    cy.wait(2000);
 
     cy.window().then(window =>
     {
