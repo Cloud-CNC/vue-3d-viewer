@@ -33,15 +33,13 @@ export const file = async (file, extension, theme) =>
   }
 };
 
-export const plane = (X, Y) =>
+export const plane = ({X, Y}) =>
 {
   state.plane.scale.set(X, Y, 1);
 };
 
-export const position = vector =>
+export const position = ({X, Y, Z}) =>
 {
-  const {X, Y, Z} = vector;
-
   if (state.meshes != null)
   {
     for (const mesh of state.meshes)
@@ -51,10 +49,8 @@ export const position = vector =>
   }
 };
 
-export const rotation = vector =>
+export const rotation = ({X, Y, Z}) =>
 {
-  let {X, Y, Z} = vector;
-
   //Convert to radians
   const scalar = Math.PI / 180;
   X *= scalar;
@@ -70,10 +66,8 @@ export const rotation = vector =>
   }
 };
 
-export const scale = vector =>
-{
-  const {X, Y, Z} = vector;
-  
+export const scale = ({X, Y, Z}) =>
+{  
   if (state.meshes != null)
   {
     for (const mesh of state.meshes)
@@ -82,20 +76,20 @@ export const scale = vector =>
     }
   }
 };
-export const theme = () =>
+export const theme = ({background, plane, primary}) =>
 {
   //Update background
-  state.scene.background.set(theme.background);
+  state.scene.background.set(background);
 
   //Update plane
-  state.plane.material.color.set(theme.plane);
+  state.plane.material.color.set(plane);
 
   //Update meshes
   if (state.meshes != null)
   {
     for (const mesh of state.meshes)
     {
-      mesh.material.color.set(theme.primary);
+      mesh.material.color.set(primary);
     }
   }
 };

@@ -23,3 +23,21 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('upload', (name, data, mime, selector) =>
+{
+  cy.get(selector).closest('.v-file-input').then(element =>
+    {
+      //Get window to instantiate correct File (https://github.com/cypress-io/cypress/issues/933)
+      cy.window().then(window =>
+      {  
+        //Create the file
+        const file = new window.File([data], name, {
+          type: mime
+        });
+  
+        //Mock file upload
+        element[0].__vue__.internalValue = file;
+      });
+    });
+});

@@ -5,17 +5,17 @@
 //Imports
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 import
-  {
-    Color,
-    HemisphereLight,
-    Mesh,
-    MeshBasicMaterial,
-    MOUSE,
-    PerspectiveCamera,
-    PlaneBufferGeometry,
-    Scene,
-    WebGLRenderer
-  } from 'three';
+{
+  Color,
+  HemisphereLight,
+  Mesh,
+  MeshBasicMaterial,
+  MOUSE,
+  PerspectiveCamera,
+  PlaneBufferGeometry,
+  Scene,
+  WebGLRenderer
+} from 'three';
 import state from './state';
 
 //Resize event handler
@@ -97,6 +97,15 @@ export const setup = async (canvas, plane, theme) =>
     }
   };
   animate();
+
+  //Environment
+  if (process.env.NODE_ENV == 'development' || process.env.NODE_ENV == 'testing')
+  {
+    window.getVue3dViewerState = () =>
+    {
+      return state;
+    };
+  }
 };
 
 //Export

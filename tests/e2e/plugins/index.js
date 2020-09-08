@@ -9,6 +9,10 @@
 // /* eslint-disable import/no-extraneous-dependencies, global-require */
 // const webpack = require('@cypress/webpack-preprocessor')
 
+//Imports
+const fs = require('fs');
+
+//Export
 module.exports = (on, config) => 
 {
   // on('file:preprocessor', webpack({
@@ -18,6 +22,30 @@ module.exports = (on, config) =>
 
   require('@cypress/code-coverage/task')(on, config);
   on('file:preprocessor', require('@cypress/code-coverage/use-babelrc'));
+
+  on('task', {
+    readBinary: path =>
+    {
+      const exists = fs.statSync(path).isFile();
+
+      if (exists)
+      {
+        console.log(`[readBinary] The path ${path} exists, reading as binary file.`);
+
+        //Read
+        const buffer = fs.readFileSync(path);
+
+        //Convert to JSON
+        const json = JSON.stringify(Array.from(buffer));
+
+        return json;
+      }
+      else
+      {
+        throw new Error(`[readBinary] The path ${path} does not exist!`);
+      }
+    }
+  });
 
   return Object.assign({}, config, {
     fixturesFolder: 'tests/e2e/fixtures',

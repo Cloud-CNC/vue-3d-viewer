@@ -4,10 +4,10 @@
       <v-list dense>
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title class="title">Bed</v-list-item-title>
+            <v-list-item-title class="title">Plane</v-list-item-title>
             <v-list-item-action-text>
-              <slider data-e2e="bed-x" label="X" value="viewer.plane.X" v-model="viewer.plane.X" />
-              <slider data-e2e="bed-y" label="Y" value="viewer.plane.Y" v-model="viewer.plane.Y" />
+              <slider data-e2e="plane-x" label="X" value="viewer.plane.X" v-model="viewer.plane.X" />
+              <slider data-e2e="plane-y" label="Y" value="viewer.plane.Y" v-model="viewer.plane.Y" />
             </v-list-item-action-text>
           </v-list-item-content>
         </v-list-item>
@@ -152,11 +152,12 @@
     </v-btn>
 
     <v-snackbar :value="true" timeout="-1">
-      <v-file-input :accept="accepts" @change="upload" label="File" />
+      <v-file-input :accept="accepts" @change="upload" data-e2e="file-input" label="File" />
     </v-snackbar>
 
     <three-d-viewer
       :extension="viewer.extension"
+      data-e2e="three-d-viewer"
       :file="viewer.file"
       :plane="viewer.plane"
       :position="viewer.position"
@@ -164,7 +165,6 @@
       :scale="viewer.scale"
       :theme="viewer.theme"
       class="emulate-root"
-      data-e2e="3d-viewer"
     />
   </v-app>
 </template>
