@@ -4,7 +4,7 @@
 
 //Imports
 import {FileFormats} from 'unified-3d-loader';
-import gcodeParser from './gcode-parser';
+import gcodeParser from './gcode';
 import unifiedParser from './unified';
 
 //Export
@@ -18,13 +18,7 @@ export default async (file, extension, theme) =>
     {
       //Load and parse the file; convert to ThreeJS mesh
       const meshes = await unifiedParser(file, format, theme);
-
-      //Materials
-      for (const mesh of meshes)
-      {
-        mesh.material.color.set(theme.primary);
-      }
-
+      
       return meshes;
     }
   }
@@ -32,11 +26,9 @@ export default async (file, extension, theme) =>
   //GCODE (Special case)
   if (extension == 'gcode')
   {
-    //Load and parse the file; convert to ThreeJS mesh
-    const parser = new gcodeParser(theme);
-    const string = new TextDecoder().decode(file);
-    const meshes = await parser.parse(string);
+    //Load and parse the file; convert to ThreeJS lines
+    const lines = await gcodeParser(file, theme);
 
-    return meshes;
+    return lines;
   }
 };

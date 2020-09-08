@@ -4,19 +4,22 @@
 
 //Imports
 import {BufferGeometry, Color, Float32BufferAttribute, Mesh, MeshPhongMaterial} from 'three';
-import {Unified3dLoader} from 'unified-3d-loader';
+import {spawn, Thread, Transfer, Worker} from 'threads';
 
 //Export
-export default async (data, format, theme) =>
+export default async (file, format, theme) =>
 {
-  //Load and parse the file
-  const loader = new Unified3dLoader();
-  const files = await loader.load(data, format, {
-    index: {
-      normals: false,
-      vertices: false
-    }
-  });
+  //Spawn the worker
+  const worker = await spawn(new Worker('./unified.worker'));
+
+  //Create the transferable file
+  const transferable = Transfer(file);
+
+  //Parse
+  const files = await worker(transferable, format);
+
+  //Kill the worker
+  Thread.terminate(worker);
 
   //Create meshes
   const meshes = [];
