@@ -56,6 +56,6 @@ module.exports = {
     }
 	],
 	ignorePatterns: [
-		"*.worker\.js"
+		'*.worker.js'
 	]
 };
