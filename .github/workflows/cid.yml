@@ -9,10 +9,10 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 14
-      - name: ESLint
-        run: npm run lint
       - name: Install Modules
         run: sudo npm ci --unsafe-perm=true --allow-root
+      - name: ESLint
+        run: npm run lint
       - uses: paambaati/codeclimate-action@v2.6.0
         name: Run Tests
         env:
