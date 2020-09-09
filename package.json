@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "author": "Cloud CNC",
   "scripts": {
-    "build": "vue-cli-service build --target lib --name vue-3d-viewr src/main.js",
+    "build": "vue-cli-service build --target lib --name vue-3d-viewer src/main.js",
     "coverage": "npm run test:e2e:cli && nyc report --reporter-lcov",
     "lint": "vue-cli-service lint",
     "serve": "vue-cli-service serve src/demo/main.js",

@@ -2,18 +2,15 @@ name: CI/CD
 on: push
 jobs:
   test:
-    name: Test with Node ${{ matrix.node }}
+    name: Test with Node 14
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [13, 14]
     steps:
       - uses: actions/checkout@v2.1.0
       - uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node }}
-      - uses: stefanoeb/eslint-action@1.0.2
-        name: ESLint
+          node-version: 14
+      - name: ESLint
+        run: npm run lint
       - name: Install Modules
         run: sudo npm ci --unsafe-perm=true --allow-root
       - uses: paambaati/codeclimate-action@v2.6.0
