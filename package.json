@@ -1,6 +1,6 @@
 {
   "name": "vue-3d-viewer",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-alpha.1",
   "author": "Cloud CNC",
   "scripts": {
     "build": "vue-cli-service build --target lib --name vue-3d-viewer src/main.js",

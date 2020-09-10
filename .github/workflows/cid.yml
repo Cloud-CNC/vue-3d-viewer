@@ -33,7 +33,7 @@ jobs:
     - name: Build
       run: npm run build
     - name: Publish to NPM
-      uses: pascalgn/npm-publish-action@1.2.0
+      uses: pascalgn/npm-publish-action@1.3.3
       with:
         #See https://regexr.com/589ii for more information
         commit_pattern: "^v?(\\d+\\.\\d+\\.\\d+(?:-(?:alpha|beta)\\.\\d+)?)$"
