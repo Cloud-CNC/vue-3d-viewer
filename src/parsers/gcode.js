@@ -13,13 +13,14 @@ import
   Float32BufferAttribute,
   Line
 } from 'three';
-import {spawn, Thread, Transfer, Worker} from 'threads';
+import {BlobWorker, spawn, Thread, Transfer} from 'threads';
+import WorkerText from './gcode.worker';
 
 //Export
 export default async (file, theme) =>
 {
   //Spawn the worker
-  const worker = await spawn(new Worker('./gcode.worker'));
+  const worker = await spawn(BlobWorker.fromText(WorkerText));
 
   //Create the transferable file
   const transferable = Transfer(file);

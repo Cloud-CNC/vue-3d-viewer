@@ -24,5 +24,5 @@ const parse = async (file, format) =>
   return files;
 };
 
-//Export
+//Expose
 expose(parse);

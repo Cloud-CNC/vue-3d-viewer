@@ -2,14 +2,16 @@
  * @fileoverview Vue CLI Config
  */
 
-//Imports
-const ThreadsPlugin = require('threads-plugin');
-
 //Export
 module.exports = {
-  configureWebpack: {
-    plugins: [
-      new ThreadsPlugin()
-    ]
+  chainWebpack: config => 
+  {
+    config.module
+      .rule('worker')
+      .before('js')
+      .test(/\.worker\.js$/)
+      .use('threads-webpack-plugin')
+      .loader('threads-webpack-plugin')
+      .end();
   }
 };

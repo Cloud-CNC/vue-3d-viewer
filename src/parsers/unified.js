@@ -4,13 +4,14 @@
 
 //Imports
 import {BufferGeometry, Color, Float32BufferAttribute, Mesh, MeshPhongMaterial} from 'three';
-import {spawn, Thread, Transfer, Worker} from 'threads';
+import {BlobWorker, spawn, Thread, Transfer} from 'threads';
+import WorkerText from './unified.worker';
 
 //Export
 export default async (file, format, theme) =>
 {
   //Spawn the worker
-  const worker = await spawn(new Worker('./unified.worker'));
+  const worker = await spawn(BlobWorker.fromText(WorkerText));
 
   //Create the transferable file
   const transferable = Transfer(file);

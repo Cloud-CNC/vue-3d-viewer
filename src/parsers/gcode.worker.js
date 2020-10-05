@@ -109,5 +109,5 @@ const parse = async file =>
   return {primaryVertices, secondaryVertices};
 };
 
-//Export
+//Expose
 expose(parse);
