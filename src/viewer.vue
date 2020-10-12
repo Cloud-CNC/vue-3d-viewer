@@ -1,5 +1,5 @@
 <template>
-  <div id="canvas" ref="canvas" />
+  <div class="vue-3d-viewer" ref="canvas" />
 </template>
 
 <script>
@@ -100,4 +100,9 @@ export default {
 </script>
 
 <style>
+.vue-3d-viewer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
 </style>

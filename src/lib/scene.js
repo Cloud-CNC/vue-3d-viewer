@@ -83,18 +83,14 @@ export const setup = async (canvas, plane, theme) =>
   //Animation loop
   const animate = () =>
   {
-    //Only recur if the viewer hasn't been destroyed
-    if (!state.destroyed)
-    {
-      //Update orbit controls
-      state.controls.update();
+    //Update orbit controls
+    state.controls.update();
 
-      //Render
-      state.renderer.render(state.scene, state.camera);
+    //Render
+    state.renderer.render(state.scene, state.camera);
 
-      //Recur
-      requestAnimationFrame(animate);
-    }
+    //Recur
+    state.renderID = requestAnimationFrame(animate);
   };
   animate();
 
@@ -131,7 +127,7 @@ export const teardown = () =>
   }
 
   //Stop animation loop
-  state.destroyed = true;
+  cancelAnimationFrame(state.renderID);
 
   //Cleanup controls and renderer
   state.controls.dispose();
