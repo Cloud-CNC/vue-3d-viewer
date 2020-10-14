@@ -1,13 +1,28 @@
 <template>
   <v-app>
-    <v-navigation-drawer dark temporary data-e2e="menu" v-model="drawer" width="400">
+    <v-navigation-drawer
+      temporary
+      data-e2e="menu"
+      v-model="drawer"
+      width="400"
+    >
       <v-list dense>
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="title">Plane</v-list-item-title>
             <v-list-item-action-text>
-              <slider data-e2e="plane-x" label="X" value="viewer.plane.X" v-model="viewer.plane.X" />
-              <slider data-e2e="plane-y" label="Y" value="viewer.plane.Y" v-model="viewer.plane.Y" />
+              <slider
+                data-e2e="plane-x"
+                label="X"
+                value="viewer.plane.X"
+                v-model="viewer.plane.X"
+              />
+              <slider
+                data-e2e="plane-y"
+                label="Y"
+                value="viewer.plane.Y"
+                v-model="viewer.plane.Y"
+              />
             </v-list-item-action-text>
           </v-list-item-content>
         </v-list-item>
@@ -147,24 +162,50 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-btn icon class="menu-icon" @click="drawer = !drawer" data-e2e="toggle-menu">
+    <v-dialog persistent v-model="progress.visible">
+      <v-card>
+        <v-card-title class="headline">Progress</v-card-title>
+        <v-card-text>
+          <v-progress-linear
+            stream
+            color="primary"
+            :buffer-value="progress.value"
+            :value="progress.value"
+          ></v-progress-linear>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+    <v-btn
+      icon
+      class="menu-icon"
+      @click="drawer = !drawer"
+      data-e2e="toggle-menu"
+    >
       <v-icon>mdi-menu</v-icon>
     </v-btn>
 
     <v-snackbar :value="true" timeout="-1">
-      <v-file-input :accept="accepts" @change="upload" data-e2e="file-input" label="File" />
+      <v-file-input
+        :accept="accepts"
+        @change="upload"
+        data-e2e="file-input"
+        label="File"
+      />
     </v-snackbar>
 
     <three-d-viewer
       :extension="viewer.extension"
-      data-e2e="three-d-viewer"
       :file="viewer.file"
       :plane="viewer.plane"
       :position="viewer.position"
       :rotation="viewer.rotation"
       :scale="viewer.scale"
       :theme="viewer.theme"
+      @done="done"
+      @progress="update"
       class="emulate-root"
+      data-e2e="three-d-viewer"
     />
   </v-app>
 </template>
@@ -182,6 +223,10 @@ export default {
   data: () => ({
     accepts,
     drawer: false,
+    progress: {
+      value: 0,
+      visible: false
+    },
     viewer: {
       plane: {
         X: 10,
@@ -217,8 +262,20 @@ export default {
     slider
   },
   methods: {
+    done()
+    {
+      this.progress.visible = false;
+    },
+    update(progress)
+    {
+      this.progress.value = progress;
+    },
     async upload(file)
     {
+      //Reset progress bar and display it
+      this.progress.value = 0;
+      this.progress.visible = true;
+
       //Set extension
       this.viewer.extension = file.name.split('.').pop();
 

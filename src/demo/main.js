@@ -14,5 +14,9 @@ Vue.use(Vuetify);
 new Vue({
   el: '#app',
   render: h => h(App),
-  vuetify: new Vuetify()
+  vuetify: new Vuetify({
+    theme: {
+      dark: true
+    }
+  })
 });

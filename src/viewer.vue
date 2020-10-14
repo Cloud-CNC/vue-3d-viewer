@@ -57,6 +57,10 @@ export default {
       }),
       type: Object
     },
+    transfer: {
+      default: true,
+      type: Boolean
+    }
   },
   mounted()
   {
@@ -70,10 +74,15 @@ export default {
   watch: {
     file: async function(file)
     {
-      await update.file(file, this.extension, this.theme);
+      await update.file(file, this.extension, this.transfer, this.theme, percent =>
+      {
+        this.$emit('progress', percent);
+      });
       update.position(this.position);
       update.rotation(this.rotation);
       update.scale(this.scale);
+
+      this.$emit('done');
     },
     plane: {
       deep: true,

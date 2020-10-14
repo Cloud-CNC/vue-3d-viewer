@@ -17,16 +17,19 @@ import {BlobWorker, spawn, Thread, Transfer} from 'threads';
 import WorkerText from './gcode.worker';
 
 //Export
-export default async (file, theme) =>
+export default async (file, transfer, theme, progress) =>
 {
   //Spawn the worker
   const worker = await spawn(BlobWorker.fromText(WorkerText));
 
-  //Create the transferable file
-  const transferable = Transfer(file);
+  //Observe progress
+  worker.observeProgress().subscribe(progress);
+
+  //If the transfer option is true, convert the model to a ThreadJS transferable otherwise have ThreadsJS clone the arraybuffer
+  const bytes = transfer ? Transfer(file) : file;
 
   //Parse
-  const {primaryVertices, secondaryVertices} = await worker(transferable);
+  const {primaryVertices, secondaryVertices} = await worker.parse(bytes);
 
   //Kill the worker
   Thread.terminate(worker);

@@ -8,16 +8,19 @@ import {BlobWorker, spawn, Thread, Transfer} from 'threads';
 import WorkerText from './unified.worker';
 
 //Export
-export default async (file, format, theme) =>
+export default async (file, format, transfer, theme, progress) =>
 {
   //Spawn the worker
   const worker = await spawn(BlobWorker.fromText(WorkerText));
 
-  //Create the transferable file
-  const transferable = Transfer(file);
+  //If the transfer option is true, convert the model to a ThreadJS transferable otherwise have ThreadsJS clone the arraybuffer
+  const bytes = transfer ? Transfer(file) : file;
+
+  //Observe progress
+  worker.observeProgress().subscribe(progress);
 
   //Parse
-  const files = await worker(transferable, format);
+  const files = await worker.parse(bytes, format);
 
   //Kill the worker
   Thread.terminate(worker);
