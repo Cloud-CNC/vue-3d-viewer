@@ -1,6 +1,6 @@
 {
   "name": "vue-3d-viewer",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A Vue 3D file viewer via Three.JS and Unified 3D Loader",
   "author": "Cloud CNC",
   "scripts": {
