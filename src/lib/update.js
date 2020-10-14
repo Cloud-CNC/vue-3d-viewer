@@ -6,7 +6,7 @@
 import parser from '../parsers';
 import state from './state';
 
-export const file = async (file, extension, theme, progress) =>
+export const file = async (file, extension, transfer, theme, progress) =>
 {
   //Remove existing meshes
   if (state.meshes != null)
@@ -18,7 +18,7 @@ export const file = async (file, extension, theme, progress) =>
   }
 
   //Parse and load
-  const meshes = await parser(file, extension, theme, progress);
+  const meshes = await parser(file, extension, transfer, theme, progress);
 
   //Save for later manipulation
   state.meshes = meshes;
